@@ -21,9 +21,7 @@ namespace FinStar
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-
-			services.AddDbContext<RecordContext>(
-				options => options.UseSqlServer("Server=localhost;Database=FinStar;Integrated Security=True"));
+			services.AddDbContext<RecordContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FinStar")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +31,8 @@ namespace FinStar
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			app.UseMiddleware<ErrorHandlerMiddleware>();
 
 			app.UseDefaultFiles();
 			app.UseStaticFiles();

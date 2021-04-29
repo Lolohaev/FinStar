@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RecordService } from 'src/app/services/record.service';
-import {Model} from "./model";
 import {Record} from "./record";
-import {Observable} from 'rxjs';
-import { map } from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -15,30 +12,33 @@ import {HttpClient} from '@angular/common/http';
 export class AppComponent implements OnInit {
   records: Record[]
   page: string
-  records1: number[] = [1, 2, 3, 4]
+  fileToUpload: File
+
   constructor(private http: HttpClient, private recordService: RecordService){ }
 
   ngOnInit(): void {
+    this.getData()
+  }
+
+  getData(): void {
     this.recordService.readAll().subscribe(data => {this.records = data; console.log(this.records);});
   }
 
-  show(): void {
-    console.log(this.records[0].id)
+  uploadData(data): void {
+    this.recordService.upload(data).subscribe(data => console.log(data))
   }
-  // readRecords(): void {
-  //   this.recordService.readAll()
-  //     .subscribe(
-  //       model => {
-  //         this.records = model.records;
-  //         this.page = model.pageInfo;
-  //         console.log(this.records);
-  //         console.log(this.page);
-  //       },
-  //       error => {
-  //         console.log(error);
-  //       });
-  //}
 
+  handleFileInput(event) {
+    let input = event.target;
+    for (var index = 0; index < input.files.length; index++) {
+        let reader = new FileReader();
+        reader.onload = () => {
+            var text = reader.result;
+            this.uploadData(text)
+        }
+        reader.readAsText(input.files[index]);
+    };
+}
 
   title = 'FinstarApp';
 }

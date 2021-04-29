@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace FinStar.Controllers
 {
+	/// <summary>
+	/// контроллер для выполнения необходимых методов
+	/// </summary>
 	[ApiController]
 	[Route("api/v1")]
 	public class RecordController : ControllerBase
@@ -26,6 +29,10 @@ namespace FinStar.Controllers
 			_logger = logger;
 		}
 
+		/// <summary>
+		/// Удаление старых записей и добавление новых
+		/// </summary>
+		/// <returns> status code </returns>
 		[HttpPost("records")]
 		public async Task<IActionResult> CreateRecords()
 		{
@@ -45,7 +52,7 @@ namespace FinStar.Controllers
 			_context.Records.AddRange(records);
 			_context.SaveChanges();
 
-			return Created(nameof(RecordController), "Records was updated or created");
+			return Created(nameof(RecordController), new { response = "Records was uploaded" });
 		}
 
 		/// <summary>
@@ -59,7 +66,7 @@ namespace FinStar.Controllers
 		{
 			if (pageCount == null || pageCount < 1)
 			{
-				pageCount = 2;
+				pageCount = 20;
 			}
 
 			if (pageNumber == null || pageNumber < 1)
