@@ -34,7 +34,7 @@ namespace FinStar.Controllers
 			var records = JsonConvert.DeserializeObject<List<Dictionary<int, string>>>(body)
 				.Select(d => new Record { Code = d.Keys.FirstOrDefault(), Value = d.Values.FirstOrDefault() }).OrderBy(i => i.Code)
 				.ToList();
-
+			
 			for (var i = 1; i <= records.Count(); i++)
 				records[i - 1].Id = i;
 
@@ -48,6 +48,12 @@ namespace FinStar.Controllers
 			return Created(nameof(RecordController), "Records was updated or created");
 		}
 
+		/// <summary>
+		/// Возвращает данные клиенту из таблицы в виде json. 
+		/// </summary>
+		/// <param name="pageNumber"> Номер возвращаемой страницы </param>
+		/// <param name="pageCount"> Количество элементов на странице </param>
+		/// <returns> status code </returns>
 		[HttpGet("records")]
 		public async Task<IActionResult> Get(int? pageNumber, int? pageCount)
 		{
@@ -79,9 +85,7 @@ namespace FinStar.Controllers
 
 			var resultRecords = await _context.Records.Skip((pageNumber.Value - 1) * pageCount.Value).Take(pageCount.Value).ToListAsync();
 
-			var resObj = JsonConvert.SerializeObject(resultRecords);
-
-			return Ok(new { pageInfo = pageText, records = resObj });
+			return Ok(new { pageInfo = pageText, records = resultRecords });
 		}
 	}
 }

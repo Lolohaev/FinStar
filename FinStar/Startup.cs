@@ -34,8 +34,13 @@ namespace FinStar
 				app.UseDeveloperExceptionPage();
 			}
 
+			app.UseDefaultFiles();
+			app.UseStaticFiles();
 			app.UseRouting();
-
+			app.UseCors(builder => builder
+			 .AllowAnyOrigin()
+			 .AllowAnyMethod()
+			 .AllowAnyHeader());
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();

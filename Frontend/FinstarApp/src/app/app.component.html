@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>FinStar test task</h1>
+  <h3>Метод 1</h3>
+	<h5>
+		Получает на вход json и сохраняет его в БД.
+		Перед сохранением данных таблицу необходимо очистить.
+	</h5>
+  <label>хуйня для метода 1</label>
+
+  <h3>Метод 2</h3>
+		<h5>
+			Возвращает данные клиенту из таблицы в виде json.
+		</h5>
+    <input id="getRecords" type="submit" value="Получить данные">
+    <div class="table">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+            <th>
+              Id
+            </th>
+            <th>
+              Code
+            </th>
+            <th>
+              Value
+            </th>
+					</tr>
+				</thead>
+
+				<tbody>
+          <tr>
+            <td>Id</td>
+            <td>Code</td>
+            <td>Value</td>
+          </tr>
+				</tbody>
+			</table>
+		</div>
+    
+    <div *ngIf="this.records">
+      <select>
+        <option [value]="record" *ngFor="let record of records">{{record.id}} {{record.code}} {{record.value}}</option>
+      </select>
+    </div>
+
+    <button (click)="show()">Save</button>
+</body>
+</html>
